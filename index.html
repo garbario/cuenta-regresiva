@@ -4,32 +4,75 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Cuenta regresiva</title>
+  <link rel="icon" href="icon.ico" type="image/x-icon">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding-top: 50px;
-      background: #f0f4f8;
+    :root {
+      --bg-light: #f0f4f8;
+      --text-light: #333;
+      --card-light: #fff;
+
+      --bg-dark: #121212;
+      --text-dark: #e0e0e0;
+      --card-dark: #1e1e1e;
     }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background-color: var(--bg-light);
+      color: var(--text-light);
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: var(--bg-dark);
+      color: var(--text-dark);
+    }
+
     h1 {
       font-size: 2.5rem;
-      margin-bottom: 20px;
+      margin: 20px;
+      text-align: center;
     }
+
     #countdown {
-      font-size: 2rem;
-      color: #333;
-      background: #fff;
-      display: inline-block;
+      font-size: 1.8rem;
+      background: var(--card-light);
+      color: inherit;
       padding: 20px;
       border-radius: 12px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+      max-width: 90%;
+    }
+
+    body.dark-mode #countdown {
+      background: var(--card-dark);
+    }
+
+    #toggleMode {
+      display: none;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+      #countdown {
+        font-size: 1.2rem;
+        padding: 15px;
+      }
     }
   </style>
 </head>
 <body>
   <h1>Cuenta regresiva para el evento canónico</h1>
-  <h2>Fecha: 19 de septiembre de 2029 a las 02:43</h2>
-
+  <h2>19 de septiembre de 2029 a las 02:43</h2>
   <div id="countdown"></div>
 
   <script>
@@ -39,7 +82,7 @@
       const now = new Date();
 
       if (now >= targetDate) {
-        document.getElementById("countdown").innerHTML = "¡La fecha ha llegado!";
+        document.getElementById("countdown").innerHTML = "Evento en curso...";
         clearInterval(countdownInterval);
         return;
       }
@@ -74,11 +117,15 @@
       }
 
       document.getElementById("countdown").innerHTML =
-        `quedan... ${years} años, ${months} meses, ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
+        `${years} años, ${months} meses, ${days} días, ${hours} horas, ${minutes} minutos, ${seconds} segundos`;
     }
 
     const countdownInterval = setInterval(updateCountdown, 1000);
     updateCountdown();
+
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+      document.body.classList.add("dark-mode");
+    }
   </script>
 </body>
 </html>
